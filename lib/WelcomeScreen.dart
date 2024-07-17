@@ -195,7 +195,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         } else {
                           db
                               .collection("Users")
-                              .doc("${patientInfo.email}")
+                              .doc("${PatientInfo.email}")
                               .set(
                             {
                               'name': name.text,
@@ -213,13 +213,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             },
                           );
 
-                          patientInfo.name = name.text;
-                          patientInfo.friendName = friendName.text;
-                          patientInfo.friendContact = friendContact.text;
-                          patientInfo.specialistName = specialist.text;
-                          patientInfo.specialistContact =
+                          PatientInfo.name = name.text;
+                          PatientInfo.friendName = friendName.text;
+                          PatientInfo.friendContact = friendContact.text;
+                          PatientInfo.specialistName = specialist.text;
+                          PatientInfo.specialistContact =
                               specialistContact.text;
-                          patientInfo.phoneNo = friendPhone.text;
+                          PatientInfo.phoneNo = friendPhone.text;
 
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text("Data submitted")));

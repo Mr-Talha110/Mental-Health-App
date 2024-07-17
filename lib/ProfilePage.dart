@@ -29,19 +29,19 @@ class _ProfileState extends State<Profile> {
         imageQuality: 90);
 
     Reference ref =
-        FirebaseStorage.instance.ref().child("${patientInfo.name}_profile.jpg");
+        FirebaseStorage.instance.ref().child("${PatientInfo.name}_profile.jpg");
 
     await ref.putFile(File(image!.path));
 
     ref.getDownloadURL().then((value) async {
       setState(() {
-        patientInfo.profile_link = value;
+        PatientInfo.profile_link = value;
       });
 
       await FirebaseFirestore.instance
           .collection('Users')
-          .doc('${patientInfo.email}')
-          .update({'profilePic': patientInfo.profile_link});
+          .doc('${PatientInfo.email}')
+          .update({'profilePic': PatientInfo.profile_link});
     });
   }
 
@@ -49,11 +49,11 @@ class _ProfileState extends State<Profile> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    friendName.text = patientInfo.friendName!;
-    specialistName.text = patientInfo.specialistName!;
-    friendContact.text = patientInfo.friendContact!;
-    specialistContact.text = patientInfo.specialistContact!;
-    friendPhone.text = patientInfo.phoneNo!;
+    friendName.text = PatientInfo.friendName!;
+    specialistName.text = PatientInfo.specialistName!;
+    friendContact.text = PatientInfo.friendContact!;
+    specialistContact.text = PatientInfo.specialistContact!;
+    friendPhone.text = PatientInfo.phoneNo!;
   }
 
   @override
@@ -90,10 +90,10 @@ class _ProfileState extends State<Profile> {
                         },
                         child: CircleAvatar(
                           radius: height / 12,
-                          backgroundImage: patientInfo.profile_link != null
-                              ? NetworkImage(patientInfo.profile_link!)
+                          backgroundImage: PatientInfo.profile_link != null
+                              ? NetworkImage(PatientInfo.profile_link!)
                               : null,
-                          child: patientInfo.profile_link == null
+                          child: PatientInfo.profile_link == null
                               ? const Icon(
                                   Icons.person,
                                   color: Colors.white,
@@ -109,7 +109,7 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: height / 14.5),
               Container(
                 child: Text(
-                  patientInfo.name!,
+                  PatientInfo.name!,
                   style: const TextStyle(fontSize: 30),
                 ),
               ),
@@ -172,7 +172,7 @@ class _ProfileState extends State<Profile> {
                           } else {
                             await FirebaseFirestore.instance
                                 .collection('Users')
-                                .doc(patientInfo.email)
+                                .doc(PatientInfo.email)
                                 .update({
                               'friend': friendName.text,
                               'friendContact': friendContact.text,
@@ -180,13 +180,13 @@ class _ProfileState extends State<Profile> {
                               'specialist': specialistName.text,
                               'specialistContact': specialistContact.text,
                             });
-                            patientInfo.friendName = friendName.text;
-                            patientInfo.friendContact = friendContact.text;
-                            patientInfo.phoneNo = friendPhone.text;
-                            patientInfo.specialistName = specialistName.text;
-                            patientInfo.specialistContact =
+                            PatientInfo.friendName = friendName.text;
+                            PatientInfo.friendContact = friendContact.text;
+                            PatientInfo.phoneNo = friendPhone.text;
+                            PatientInfo.specialistName = specialistName.text;
+                            PatientInfo.specialistContact =
                                 specialistContact.text;
-                            print(patientInfo.specialistContact);
+                            print(PatientInfo.specialistContact);
                           }
                         },
                         child: Text(

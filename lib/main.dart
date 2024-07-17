@@ -55,7 +55,7 @@ class _AccessState extends State<Access> {
     try {
       if (sharedPreferences.getString("caress101") != null) {
         setState(() {
-          patientInfo.email = sharedPreferences.getString("caress101")!;
+          PatientInfo.email = sharedPreferences.getString("caress101")!;
           userAvailable = true;
         });
       }
@@ -194,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: height / 11.5,
                         onPressed: () async {
                           setState(() {
-                            patientInfo.email = email;
+                            PatientInfo.email = email;
                           });
                           if (email.isNotEmpty && password.isNotEmpty) {
                             if (password.length < 6) {
@@ -264,7 +264,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class patientInfo {
+class PatientInfo {
   static String? name;
   static int? age;
   static String? email;

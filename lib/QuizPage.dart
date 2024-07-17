@@ -201,12 +201,12 @@ class _QuestionState extends State<Question> {
                                 : ans >= widget.qno / 2
                                     ? "Moderate"
                                     : "Low";
-                            print(patientInfo.specialistContact);
+                            print(PatientInfo.specialistContact);
                             sendEmail(
-                                patientInfo.name!,
-                                patientInfo.specialistName!,
-                                'Your patient has taken an ${widget.disorder} test. He/she has $risk risk of suffering through the disorder. Kindly share your advice on ${patientInfo.email} or contact him personally',
-                                patientInfo.specialistContact!);
+                                PatientInfo.name!,
+                                PatientInfo.specialistName!,
+                                'Your patient has taken an ${widget.disorder} test. He/she has $risk risk of suffering through the disorder. Kindly share your advice on ${PatientInfo.email} or contact him personally',
+                                PatientInfo.specialistContact!);
                           }
                         });
                       },

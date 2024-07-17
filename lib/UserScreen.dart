@@ -4,12 +4,7 @@ import 'package:caress/Assessment.dart';
 import 'package:caress/Helpline.dart';
 import 'package:caress/Prediction.dart';
 import 'package:caress/main.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -19,7 +14,7 @@ import 'package:usage_stats/usage_stats.dart';
 import 'Instruction.dart';
 
 class UserData extends StatefulWidget {
-  const UserData({Key? key}) : super(key: key);
+  const UserData({super.key});
 
   @override
   State<UserData> createState() => _UserDataState();
@@ -42,7 +37,7 @@ class _UserDataState extends State<UserData> {
   bool notify = false;
 
   Future func() async {
-    HealthFactory health = HealthFactory();
+    // HealthFactory health = HealthFactory();
 
     // define the types to get
     var types = [
@@ -58,18 +53,21 @@ class _UserDataState extends State<UserData> {
     await Permission.activityRecognition.request();
 
     // requesting access to the data types before reading them
-    bool requested = await health.requestAuthorization(types);
+    bool requested = true;
+    // bool requested = await health.requestAuthorization(types);
 
     var now = DateTime.now();
     // fetch health data from the last 24 hours
-    List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
-        now.subtract(const Duration(days: 1)), now, types);
+    List<HealthDataPoint> healthData = [];
+    // List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
+    //     now.subtract(const Duration(days: 1)), now, types);
 
     // get the number of steps for today
     var midnight = DateTime(now.year, now.month, now.day);
     var xyz = DateTime(now.year, now.month, now.day, now.hour, now.minute - 10);
-    _steps = await health.getTotalStepsInInterval(midnight, now);
-    stepx = await health.getTotalStepsInInterval(xyz, now);
+    _steps = 0;
+    // _steps = await health.getTotalStepsInInterval(midnight, now);
+    stepx = 0;
     stepx ??= 0;
 
     String? heartRate;
@@ -300,16 +298,16 @@ class _UserDataState extends State<UserData> {
     Timer.periodic(const Duration(hours: 3), (timer) {
       if (c == 1) {
         sendEmail(
-          patientInfo.name!,
-          patientInfo.friendName!,
-          'Your friend ${patientInfo.name} had an anxiety attack',
-          patientInfo.friendContact!,
+          PatientInfo.name!,
+          PatientInfo.friendName!,
+          'Your friend ${PatientInfo.name} had an anxiety attack',
+          PatientInfo.friendContact!,
         );
         sendEmail(
-          patientInfo.name!,
-          patientInfo.specialistName!,
-          'Your patient ${patientInfo.name} had an anxiety attack',
-          patientInfo.specialistContact!,
+          PatientInfo.name!,
+          PatientInfo.specialistName!,
+          'Your patient ${PatientInfo.name} had an anxiety attack',
+          PatientInfo.specialistContact!,
         );
         c = 0;
       }
@@ -342,7 +340,7 @@ class _UserDataState extends State<UserData> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Hey!! ${patientInfo.name}, Welcome to Caress',
+                          'Hey!! ${PatientInfo.name}, Welcome to Caress',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
@@ -454,7 +452,7 @@ class DataValue extends StatelessWidget {
 }
 
 class Menu extends StatefulWidget {
-  const Menu({Key? key}) : super(key: key);
+  const Menu({super.key});
 
   @override
   State<Menu> createState() => _MenuState();

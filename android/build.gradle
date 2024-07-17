@@ -16,12 +16,13 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
-// buildscript {
-//     repositories {
-//         google()
-//         mavenCentral()
-//     }
-//     dependencies {
-//         classpath 'com.android.tools.build:gradle:7.0.4' // Use the appropriate version
-//     }
-// }
+buildscript {
+    ext.kotlin_version = '2.0.0' 
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.4'
+    }
+}

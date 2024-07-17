@@ -11,22 +11,12 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:usage_stats/usage_stats.dart';
 
 import 'Instruction.dart';
-
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'high importance channel', 'High Importance Notifications',
-    description: 'This Channel is used for important notifications',
-    importance: Importance.high,
-    playSound: true);
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
 
 class UserData extends StatefulWidget {
   const UserData({Key? key}) : super(key: key);
@@ -143,131 +133,131 @@ class _UserDataState extends State<UserData> {
     }
   }
 
-  void notification() async {
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
+  void notification() async {}
+  //   // await flutterLocalNotificationsPlugin
+  //   //     .resolvePlatformSpecificImplementation<
+  //   //         AndroidFlutterLocalNotificationsPlugin>()
+  //   //     ?.createNotificationChannel(channel);
 
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+  //   // const AndroidInitializationSettings initializationSettingsAndroid =
+  //   //     AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    var x = events[1]
-        .packageName!
-        .replaceFirst("com.", "")
-        .replaceFirst(".android", "");
-    String statement = (x == 'whatsapp' ||
-            x == 'instagram' ||
-            x == 'snapchat' ||
-            x == 'twitter' ||
-            x == 'google.youtube')
-        ? '4. Stop using $x'
-        : '4. Stop using all the apps now.';
+  //   var x = events[1]
+  //       .packageName!
+  //       .replaceFirst("com.", "")
+  //       .replaceFirst(".android", "");
+  //   String statement = (x == 'whatsapp' ||
+  //           x == 'instagram' ||
+  //           x == 'snapchat' ||
+  //           x == 'twitter' ||
+  //           x == 'google.youtube')
+  //       ? '4. Stop using $x'
+  //       : '4. Stop using all the apps now.';
 
-    const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
+  //   const InitializationSettings initializationSettings =
+  //       InitializationSettings(android: initializationSettingsAndroid);
 
-    if (int.parse(_heart_rate!.split(".")[0]) > 100) {
-      flutterLocalNotificationsPlugin.show(
-        0,
-        "Alert",
-        "Your heartbeat is increasing",
-        NotificationDetails(
-          android: AndroidNotificationDetails(channel.id, channel.name,
-              channelDescription: channel.description,
-              importance: Importance.high,
-              color: Colors.red,
-              playSound: true,
-              icon: '@mipmap/ic_launcher'),
-        ),
-        payload: "optional payload",
-      );
-    }
+  //   if (int.parse(_heart_rate!.split(".")[0]) > 100) {
+  //     flutterLocalNotificationsPlugin.show(
+  //       0,
+  //       "Alert",
+  //       "Your heartbeat is increasing",
+  //       NotificationDetails(
+  //         android: AndroidNotificationDetails(channel.id, channel.name,
+  //             channelDescription: channel.description,
+  //             importance: Importance.high,
+  //             color: Colors.red,
+  //             playSound: true,
+  //             icon: '@mipmap/ic_launcher'),
+  //       ),
+  //       payload: "optional payload",
+  //     );
+  //   }
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: (NotificationResponse) {
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: const Text(
-            'Alert',
-            style: TextStyle(
-                fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold),
-          ),
-          content: SizedBox(
-            height: 180,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  'Anxiety attack detected!!',
-                  style: TextStyle(fontSize: 15.00, color: Colors.blue),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  '1. Stop using your phone\n2. Take Deep breaths and Relax\n3. Take a Juice break\n$statement',
-                  style: const TextStyle(fontSize: 15.00, color: Colors.black),
-                ),
-                const SizedBox(height: 10),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
-            ),
-            TextButton(
-              child: Text('Call ${patientInfo.friendName}'),
-              onPressed: () {
-                FlutterPhoneDirectCaller.callNumber(patientInfo.phoneNo!);
-              },
-            ),
-          ],
-        ),
-      );
-    }, onDidReceiveBackgroundNotificationResponse: (NotificationResponse) {
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: const Text(
-            'Alert',
-            style: TextStyle(
-                fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold),
-          ),
-          content: SizedBox(
-            height: 180,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  'Anxiety attack detected!!',
-                  style: TextStyle(fontSize: 15.00, color: Colors.blue),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  '1. Stop using your phone\n2. Take Deep breaths and Relax\n3. Take a Juice break\n$statement',
-                  style: const TextStyle(fontSize: 15.00, color: Colors.black),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
-            ),
-            TextButton(
-              child: Text('Call ${patientInfo.friendName}'),
-              onPressed: () {
-                FlutterPhoneDirectCaller.callNumber(patientInfo.phoneNo!);
-              },
-            ),
-          ],
-        ),
-      );
-    });
-  }
+  //   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //       onDidReceiveNotificationResponse: (NotificationResponse) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (_) => AlertDialog(
+  //         title: const Text(
+  //           'Alert',
+  //           style: TextStyle(
+  //               fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold),
+  //         ),
+  //         content: SizedBox(
+  //           height: 180,
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.center,
+  //             children: [
+  //               const Text(
+  //                 'Anxiety attack detected!!',
+  //                 style: TextStyle(fontSize: 15.00, color: Colors.blue),
+  //               ),
+  //               const SizedBox(height: 5),
+  //               Text(
+  //                 '1. Stop using your phone\n2. Take Deep breaths and Relax\n3. Take a Juice break\n$statement',
+  //                 style: const TextStyle(fontSize: 15.00, color: Colors.black),
+  //               ),
+  //               const SizedBox(height: 10),
+  //             ],
+  //           ),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             child: const Text('OK'),
+  //             onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+  //           ),
+  //           TextButton(
+  //             child: Text('Call ${patientInfo.friendName}'),
+  //             onPressed: () {
+  //               FlutterPhoneDirectCaller.callNumber(patientInfo.phoneNo!);
+  //             },
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }, onDidReceiveBackgroundNotificationResponse: (NotificationResponse) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (_) => AlertDialog(
+  //         title: const Text(
+  //           'Alert',
+  //           style: TextStyle(
+  //               fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold),
+  //         ),
+  //         content: SizedBox(
+  //           height: 180,
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.center,
+  //             children: [
+  //               const Text(
+  //                 'Anxiety attack detected!!',
+  //                 style: TextStyle(fontSize: 15.00, color: Colors.blue),
+  //               ),
+  //               const SizedBox(height: 5),
+  //               Text(
+  //                 '1. Stop using your phone\n2. Take Deep breaths and Relax\n3. Take a Juice break\n$statement',
+  //                 style: const TextStyle(fontSize: 15.00, color: Colors.black),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             child: const Text('OK'),
+  //             onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+  //           ),
+  //           TextButton(
+  //             child: Text('Call ${patientInfo.friendName}'),
+  //             onPressed: () {
+  //               FlutterPhoneDirectCaller.callNumber(patientInfo.phoneNo!);
+  //             },
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   });
+  // }
 
   Future<void> initUsage() async {
     UsageStats.grantUsagePermission();
